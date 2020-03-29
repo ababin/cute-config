@@ -5,25 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Builder;
 import ru.absoft.util.cuteconfig.exc.ParamNotFoundException;
 import ru.absoft.util.cuteconfig.model.Value;
 
 public class CuteConfiguration {
-	
+	        
 	private final FileObserver observer;
 	
-	public CuteConfiguration(String filePath, int refreshPeriodMS, ConfigurationListener confListener, PostProcessor ... postProcessors) throws FileNotFoundException {
-		observer = new FileObserver(filePath, refreshPeriodMS, confListener, postProcessors);
+	@Builder
+	private CuteConfiguration(String filePath, String overridedFilePath, int refreshPeriodMS, ConfigurationListener confListener, PostProcessor postProcessor) throws FileNotFoundException {
+	    observer = new FileObserver(filePath, refreshPeriodMS, confListener, postProcessor);
 	}
-	
-	public CuteConfiguration(String filePath, int refreshPeriodMS, ConfigurationListener confListener) throws FileNotFoundException {
-		observer = new FileObserver(filePath, refreshPeriodMS, confListener);
-	}
-	
-	public CuteConfiguration(String filePath, int refreshPeriodMS) throws FileNotFoundException {
-		observer = new FileObserver(filePath, refreshPeriodMS, null);
-	}
-			
+					
 	public String getString(String paramName) {
 		Map<String, Value> map = observer.getValues(); 
 		if(!map.containsKey(paramName)) {
@@ -93,7 +87,5 @@ public class CuteConfiguration {
 			return defaultValue;
 		}
 	}
-	
-	
-	
+			
 }

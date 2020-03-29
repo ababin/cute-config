@@ -18,16 +18,16 @@ class FileObserver {
 	private final Timer timer;
 	private final Loader fileLoader;
 	private final ConfigurationListener confListener;
-	private final PostProcessor [] postProcessors;
+	private final PostProcessor postProcessor;
 
 	private volatile @Getter Map<String, Value> values;
 
 	public FileObserver(String path, long checkIntervalMs, ConfigurationListener errorListener,
-			PostProcessor ... postProcessors) throws FileNotFoundException {
+			PostProcessor postProcessor) throws FileNotFoundException {
 
 		fileLoader = LoaderFactory.obtainLoader(path);
 		this.confListener = errorListener;
-		this.postProcessors = postProcessors;
+		this.postProcessor = postProcessor;
 		this.timer = new Timer(true);
 		readFile();
 		timer.schedule(new LoaderTask(), checkIntervalMs, checkIntervalMs);
@@ -48,13 +48,10 @@ class FileObserver {
 
 	private Map<String, Value> postProcess(List<Value> parsed) {
 		Map<String, Value> map = parsed.stream().collect(Collectors.toMap(v -> v.getParamName(), v -> v)); 
-		if(postProcessors == null) {
+		if(postProcessor == null) {
 			return map;
 		}
-		for(PostProcessor postProcessor : postProcessors) {
-			map = postProcessor != null ? postProcessor.process(map) : map;
-		}
-		return map; 
+		return postProcessor != null ? postProcessor.process(map) : map;
 	}
 	
 	private class LoaderTask extends TimerTask {

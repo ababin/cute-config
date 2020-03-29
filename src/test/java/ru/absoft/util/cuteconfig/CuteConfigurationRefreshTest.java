@@ -33,7 +33,10 @@ public class CuteConfigurationRefreshTest {
 		writeTmpFile("prop1=val1\nprop2=val2\nprop3=val3");
 		
 		// 2. create config
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder()
+		        .filePath(CONFIG_FILE)
+		        .refreshPeriodMS(1000)
+		        .build();
 		
 		// 3. check parameters
 		assertEquals(3, config.getParams().size());

@@ -45,15 +45,19 @@ public class CuteConfigurationListenerTest {
 		writeTmpFile("prop1=val1");
 		
 		// 2. create config
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000, new ConfigurationListener() {
-			@Override
-			public void onReadFileError(String message, Throwable t) {
-				onReadFileError = true;
-			}
-			@Override
-			public void onFileChanged(long fileModifiedTime) {
-				onFileChanged = true;				
-			}});
+		CuteConfiguration config = CuteConfiguration.builder()
+		        .filePath(CONFIG_FILE)
+		        .refreshPeriodMS(1_000)
+		        .confListener(new ConfigurationListener() {
+                    @Override
+                    public void onReadFileError(String message, Throwable t) {
+                        onReadFileError = true;
+                    }
+                    @Override
+                    public void onFileChanged(long fileModifiedTime) {
+                        onFileChanged = true;               
+                    }})
+		        .build();
 		
 		// 3. check parameters
 		assertEquals(1, config.getParams().size());
@@ -79,15 +83,19 @@ public class CuteConfigurationListenerTest {
 		writeTmpFile("prop1=val1");
 		
 		// 2. create config
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000, new ConfigurationListener() {
-			@Override
-			public void onReadFileError(String message, Throwable t) {
-				onReadFileError = true;
-			}
-			@Override
-			public void onFileChanged(long fileModifiedTime) {
-				onFileChanged = true;				
-			}});
+		CuteConfiguration config = CuteConfiguration.builder()
+		        .filePath(CONFIG_FILE)
+		        .refreshPeriodMS(1000)
+		        .confListener(new ConfigurationListener() {
+        			@Override
+        			public void onReadFileError(String message, Throwable t) {
+        				onReadFileError = true;
+        			}
+        			@Override
+        			public void onFileChanged(long fileModifiedTime) {
+        				onFileChanged = true;				
+        			}})
+		        .build();
 		
 		// 3. check parameters
 		assertEquals(1, config.getParams().size());

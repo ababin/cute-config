@@ -23,25 +23,24 @@ public class CuteConfigurationTest {
 	@Test
 	public void test_whenFileNotFound() throws FileNotFoundException {
 		assertThrows(FileNotFoundException.class,
-				() -> new CuteConfiguration("first-config-not-exist.properties", 1000)
+				() -> CuteConfiguration.builder().filePath("first-config-not-exist.properties").refreshPeriodMS(1000).build()
 				);
 	}
 	
 	@Test
 	public void test_relatedPath() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration("src/test/resources/first-config.properties", 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath("src/test/resources/first-config.properties").refreshPeriodMS(1000).build();
 		assertEquals(6, config.getParams().size());
-		
 	}
 	
 	@Test
 	public void test_withPostProcessor() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(
-				"src/test/resources/first-config.properties", 
-				1000, 
-				null, 
-				new IntervalPostProcessor() 
-		);
+		CuteConfiguration config = CuteConfiguration.builder()
+		        .filePath("src/test/resources/first-config.properties")
+		        .refreshPeriodMS(1000)
+		        .postProcessor(new IntervalPostProcessor())
+		        .build();
+				 
 		assertEquals(6, config.getParams().size());
 		Map<String, String> map = config.getStringMap("some.propertyMap");
 		assertEquals(26, map.size());
@@ -56,12 +55,12 @@ public class CuteConfigurationTest {
 	@Test
 	public void test_withNullPostProcessors() throws FileNotFoundException {
 		PostProcessor postProcessor = null;
-		CuteConfiguration config = new CuteConfiguration(
-				"src/test/resources/first-config.properties", 
-				1000, 
-				null, 
-				postProcessor 
-		);
+		CuteConfiguration config = CuteConfiguration.builder()
+		        .filePath("src/test/resources/first-config.properties")
+		        .refreshPeriodMS(1000)
+		        .postProcessor(postProcessor)
+		        .build();
+		
 		assertEquals(6, config.getParams().size());
 		Map<String, String> map = config.getStringMap("some.propertyMap");
 		assertEquals(4, map.size());
@@ -75,7 +74,7 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_absolutePath() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 		
 		Map<String, Value> map = config.getParams();
 		
@@ -85,14 +84,14 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getString() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 						
 		assertEquals("val1", config.getString("some.property1"));
 	}
 	
 	@Test
 	public void test_getString_notFound() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		assertThrows(ParamNotFoundException.class,
 				() -> config.getString("some.property12")
@@ -101,14 +100,14 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getString_notFoundWithDefault() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		assertEquals("valll", config.getString("some.property122", "valll"));
 	}
 	
 	@Test
 	public void test_getStringList_normal() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		List <String> list = config.getStringList("some.propertyList");
 		assertEquals(16, list.size());
@@ -116,7 +115,7 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getStringList_notFound() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		assertThrows(ParamNotFoundException.class,
 				() -> config.getStringList("some.property12")
@@ -125,7 +124,7 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getStringMap_normal() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		Map <String, String> map = config.getStringMap("some.propertyMap");
 		assertEquals(4, map.size());
@@ -133,7 +132,7 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getBoolean_notFound() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 					
 		assertThrows(ParamNotFoundException.class,
 				() -> config.getStringList("some.boolean")
@@ -142,26 +141,22 @@ public class CuteConfigurationTest {
 	
 	@Test
 	public void test_getBoolean_notFound_withDefault() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 		assertTrue(config.getBoolean("some.boolean", true));
 		assertFalse(config.getBoolean("some.boolean", false));
 	}
 	
 	@Test
 	public void test_getBoolean() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 		assertTrue(config.getBoolean("some.property2"));			
 	}
 	
 	@Test
 	public void test_getBoolean_withDefault() throws FileNotFoundException {
-		CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+		CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 		assertTrue(config.getBoolean("some.property2", true));			
 		assertTrue(config.getBoolean("some.property2", false));
 	}
-	
-	
-	
-	
 	
 }
