@@ -1,4 +1,6 @@
-# Wrapper for working with specified format configuration files (readable and reloadable)
+# Readable, reloadable and overridable configuration management implementation for working with ordinal or specified format configuration data
+
+For more information please see https://github.com/ababin/cute-config/wiki
 
 Configuration file can look like this:
 
