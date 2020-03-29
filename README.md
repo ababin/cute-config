@@ -26,15 +26,9 @@ key5:val5, key6: some phrase or something a little more
 ```
 
 
-Command for installing artifact into repository:
-
-```
- mvn8 install:install-file -DgroupId=ru.absoft.util -DartifactId=cute-config -Dversion=1.0.1 -Dfile=target/cute-config.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=/home/alexander/projects/github/mvnrepo  -DcreateChecksum=true
-```
-
 ### Java code example
 ```java
-CuteConfiguration config = new CuteConfiguration(CONFIG_FILE, 1000);
+CuteConfiguration config = CuteConfiguration.builder().filePath(CONFIG_FILE).refreshPeriodMS(1000).build();
 List<String> propList = config.getStringList("some.prop.propList");
 
 Map<String, String> propMap = config.getStringMap("some.prop.propMap");
