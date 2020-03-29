@@ -7,7 +7,7 @@
 	<groupId>ru.absoft.util</groupId>
 	<artifactId>cute-config</artifactId>
 	<version>1.1-SNAPSHOT</version>
-	<name>Readble and reloadable configuration management</name>
+	<name>Readble, overridable and reloadable configuration management</name>
 	<description></description>
 
 
@@ -17,17 +17,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<lombok.ver>1.16.16</lombok.ver>
-		<slf4j.version>1.7.9</slf4j.version>
 	</properties>
-    
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>ababin Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/ababin/cute-config</url>
-        </repository>
-    </distributionManagement>
-    
+            
 	<dependencies>
 
 		<dependency>
@@ -35,14 +26,7 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.ver}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
